@@ -11,7 +11,10 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-import { transactionsReducer } from "./transactions/slice";
+import { contactsReducer } from "./contacts/slice";
+import { filterReducer } from "./filterbyName/slice";
+
+
 
 const middleware = [
   ...getDefaultMiddleware({
@@ -30,10 +33,12 @@ const authPersistConfig = {
 export const store = configureStore({
   reducer: {
     auth: persistReducer(authPersistConfig, authReducer),
-    transactions: transactionsReducer,
+    contacts: contactsReducer,
+    filter: filterReducer,
+    
   },
   middleware,
-  devTools: "development",
+  devTools: "development"
 });
 
 export const persistor = persistStore(store);

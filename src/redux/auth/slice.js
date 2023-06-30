@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { login, refreshUser, register } from "./operations";
+import { login, logout, refreshUser, register } from "./operations";
 
 const initialState = {
   user: { firstName: null, lastName: null, email: null },
@@ -45,28 +45,38 @@ export const authSlice = createSlice({
     [login.rejected]: handleRejected,
     [refreshUser.rejected]: handleRejected,
     [register.fulfilled](state, { payload }) {
-      const { firstName, lastName, email } = payload.user;
-      state.user = { firstName, lastName, email };
-      state.token = payload.accessToken;
+      const { name, email } = payload.user;
+      state.user = { name, email };
+      state.token = payload.token;
       state.isLoggedIn = true;
       state.isLoading = false;
       state.error = null;
     },
     [login.fulfilled](state, { payload }) {
-      const { firstName, lastName, email } = payload.user;
-      state.user = { firstName, lastName, email };
-      state.token = payload.accessToken;
+      console.log('login.Fulfilled');
+      const { name, email } = payload.user;
+      state.user = { name, email };
+      state.token = payload.token;
       state.isLoggedIn = true;
       state.error = null;
       state.isLoading = false;
     },
     [refreshUser.fulfilled](state, { payload }) {
       state.user = {
-        firstName: payload.firstName,
-        lastName: payload.lastName,
+        name: payload.firstName,
         email: payload.email,
       };
       state.isLoggedIn = true;
+      state.error = null;
+      state.isLoading = false;
+    },
+    [logout.fulfilled](state, { payload }) {
+      state.user = {
+        name: null,
+        email: null,
+      };
+      state.token = null;
+      state.isLoggedIn = false;
       state.error = null;
       state.isLoading = false;
     },

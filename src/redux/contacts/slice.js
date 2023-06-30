@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createTransaction, fetchTransactions } from "./operations";
+import { createTransaction, fetchContacts} from "./operations";
+import { refreshUser } from "redux/auth/operations";
 
 const initialState = {
-  items: [],
+  contacts: [{id:1, name:"jhon", phone:32165498789},{id:2, name:"LAU", phone:1813551685}],
   meta: null,
   isLoading: false,
   error: null,
@@ -19,8 +20,8 @@ const handleRejected = (state, action) => {
   state.error = action.payload;
 };
 
-export const transactionsSlice = createSlice({
-  name: "transactions",
+export const contactsSlice = createSlice({
+  name: "contacts",
   initialState,
   reducers: {
     setFormError(state, { payload }) {
@@ -35,14 +36,20 @@ export const transactionsSlice = createSlice({
     clearMessage(state) {
       state.message = null;
     },
+    
+    
+  
   },
   extraReducers: {
-    [fetchTransactions.pending]: handlePending,
+    [fetchContacts.pending]: handlePending,
     [createTransaction.pending]: handlePending,
-    [fetchTransactions.rejected]: handleRejected,
+    [refreshUser.pending]: handlePending,
+    [fetchContacts.rejected]: handleRejected,
     [createTransaction.rejected]: handleRejected,
-    [fetchTransactions.fulfilled](state, { payload }) {
-      state.items = payload.data;
+    [refreshUser.rejected]: handleRejected,
+    [fetchContacts.fulfilled](state, { payload }) {
+      console.log('fectchContacts.Fulfilled',payload);
+      state.contacts = payload.data;
       state.meta = payload.meta;
       state.isLoading = false;
       state.error = null;
@@ -54,10 +61,19 @@ export const transactionsSlice = createSlice({
       state.formError = undefined;
       state.message = `A transaction of category ${payload.category} was created successfully`;
     },
+    [refreshUser.fulfilled](state, { payload }) {
+      state.user = {
+        name: payload.name,
+        email: payload.email,
+      };
+      state.isLoggedIn = true;
+      state.error = null;
+      state.isLoading = false;
+    },
   },
 });
 
 export const { setFormError, clearFormError, clearError, clearMessage } =
-  transactionsSlice.actions;
+  contactsSlice.actions;
 
-export const transactionsReducer = transactionsSlice.reducer;
+export const contactsReducer = contactsSlice.reducer;

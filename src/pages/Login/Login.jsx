@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearError, clearFormError, setFormError} from "../../redux/auth/slice"; 
  import {login}  from "../../redux/auth/operations";
 import { useEffect } from "react";
-import { toast } from "react-hot-toast"; 
+import toast, { Toaster } from 'react-hot-toast';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -10,15 +10,14 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    const { email, password, name } = e.target.elements;
+    const { email, password} = e.target.elements;
     const credentials = {
-      name: name.value,
       email: email.value,
       password: password.value,
       
     };
 
-     if (email.value && password.value && name.value) {
+     if (email.value && password.value) {
       console.log(credentials);
       dispatch(login(credentials));
     } else {
@@ -29,6 +28,7 @@ const Login = () => {
    useEffect(() => {
     if (formError) {
       toast.error(formError);
+      console.log("error found, loginjsx", formError)
       dispatch(clearFormError());
     }
   }, [dispatch, formError]);
@@ -63,12 +63,6 @@ const Login = () => {
         <label
           style={{ display: "flex", flexDirection: "column", marginTop: 10 }}
         >
-          Name
-          <input type="text" name="name" />
-        </label>
-        <label
-          style={{ display: "flex", flexDirection: "column", marginTop: 10 }}
-        >
           Email
           <input type="text" name="email" />
         </label>
@@ -80,6 +74,7 @@ const Login = () => {
         </label>
         <button type="submit" style={{ marginTop: 20 }} disabled={isLoading}>
           {isLoading ? "Loading..." : "Send"}
+          <Toaster />
         </button>
       </form>
     </div>

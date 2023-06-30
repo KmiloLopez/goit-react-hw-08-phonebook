@@ -1,11 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 const BASE_URL="https://connections-api.herokuapp.com"
 
-export const fetchTransactions = createAsyncThunk(
-  "transactions/fetchTransactions",
+export const fetchContacts = createAsyncThunk(
+  "contacts/fetchContacts",
   async (token, thunkAPI) => {
     try {
-      const response = await fetch(`${BASE_URL}/transactions`, {
+      const response = await fetch(`${BASE_URL}/contacts`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -15,7 +15,7 @@ export const fetchTransactions = createAsyncThunk(
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message);
+        throw new Error("desde throw new error",data.message);
       }
 
       return data;
@@ -47,6 +47,25 @@ export const createTransaction = createAsyncThunk(
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+export const deleteContact = createAsyncThunk(
+  'contacts/deletecontact',
+  async (idToDelete, thunkAPI) => {
+    try {
+      const data = await fetch(`${BASE_URL}/contacts/${idToDelete}`, {
+        method: 'DELETE',
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${idToDelete.token}`,
+        },
+        body: JSON.stringify(idToDelete),
+      });
+      const response = await data.json();
+      return response;
+    } catch (e) {
+      thunkAPI.rejectWithValue(e.message);
     }
   }
 );

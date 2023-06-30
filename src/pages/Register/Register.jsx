@@ -1,12 +1,13 @@
 import { clearError, clearFormError, setFormError} from "../../redux/auth/slice"; 
  import {register}  from "../../redux/auth/operations";
 import { useEffect } from "react";
-import { toast } from "react-hot-toast"; 
+import toast, {Toaster} from "react-hot-toast"; 
 import { useDispatch, useSelector } from "react-redux";
 
 const Register = () => {
   const dispatch = useDispatch();
-  const { formError, error, isLoading } = useSelector((state) => state.auth);
+  const { formError, error, isLoading, token} = useSelector((state) => state.auth);
+  const {name, email} = useSelector((state) => state.auth.user);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -18,7 +19,7 @@ const Register = () => {
     };
 
      if (email.value && password.value && name.value) {
-      console.log(credentials);
+      console.log("credentials",credentials);
       dispatch(register(credentials));
     } else {
       dispatch(setFormError("Verify the provided info and try again."));
@@ -38,6 +39,10 @@ const Register = () => {
       dispatch(clearError());
     }
   }, [dispatch, error]); 
+  const handleClick = ()=>{
+    
+    console.log("hep clicked",name, email, token);
+  }
     return (<div>
       <h2>Register</h2>;
       <div
@@ -79,8 +84,12 @@ const Register = () => {
         </label>
         <button type="submit" style={{ marginTop: 20 }} disabled={isLoading}>
           {isLoading ? "Loading..." : "Send"}
+          
         </button>
+        
       </form>
+      <Toaster/>
+      <button onClick={handleClick}>show state user</button>
     </div>
     </div>
 

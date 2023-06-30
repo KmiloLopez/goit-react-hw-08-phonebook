@@ -1,7 +1,11 @@
 
 import {Routes, Route} from "react-router-dom"
-import {lazy} from "react";
+import {lazy, useEffect} from "react";
 import SharedLayout from "./SharedLayout";
+import { PrivateRoute } from "./PrivateRoute";
+import { RestrictedRoute } from "./RestrictedRoute";
+import { useDispatch, useSelector } from "react-redux";
+import { refreshUser } from "redux/auth/operations";
 
 
 
@@ -11,6 +15,14 @@ const Contacts = lazy(()=>import("pages/Contacts/Contacts"))
 
 
 export const App = () => {
+  const dispatch= useDispatch();
+  const { token } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (token) {
+      dispatch(refreshUser(token));
+    }
+  }, [dispatch, token]);
   
   return (
     <div>
@@ -18,9 +30,24 @@ export const App = () => {
         
 
         <Route path="/" element={<SharedLayout />}>
-          <Route path="/register" element={<Register />}/>
-          <Route path="/login" element={<Login />}/>
-          <Route path="/contacts" element={<Contacts />}/>
+          <Route path="/register" element={
+            <RestrictedRoute
+              component={<Register/>}
+              redirectTo="/contacts"
+            />
+          }/>
+          <Route
+          path="login"
+          element={
+            <RestrictedRoute
+              component={<Login/>}
+              redirectTo="/contacts"
+            />
+          }
+        />
+          <Route path="/contacts" element={
+            <PrivateRoute redirectTo="/" component={<Contacts />} />
+          }/>
           
           <Route path="*" element={<SharedLayout/>} />
         </Route>    

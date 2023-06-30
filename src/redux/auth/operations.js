@@ -6,7 +6,7 @@ export const register = createAsyncThunk(
   "auth/register",
   async (credentials, thunkAPI) => {
     try {
-      console.log("credentials from operations", credentials);
+      
       const response = await fetch(`${BASE_URL}/users/signup`, {
         method: "POST",
         body: JSON.stringify(credentials),
@@ -31,7 +31,7 @@ export const login = createAsyncThunk(
   "auth/login",
   async (credentials, thunkAPI) => {
     try {
-      const response = await fetch(`${BASE_URL}/users/signup`, {
+      const response = await fetch(`${BASE_URL}/users/login`, {
         method: "POST",
         body: JSON.stringify(credentials),
         headers: {
@@ -51,25 +51,51 @@ export const login = createAsyncThunk(
   }
 );
 
-export const refreshUser = createAsyncThunk(
-  "auth/refreshUser",
+
+export const logout = createAsyncThunk(
+  "auth/logout",
   async (token, thunkAPI) => {
     try {
-      const response = await fetch(`${BASE_URL}/account`, {
+      const response = await fetch(`${BASE_URL}/users/logout`, {
+        method: "POST",
         headers: {
+          
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
+          
         },
       });
       const data = await response.json();
-
+      
       if (!response.ok) {
         throw new Error(data.message);
       }
-
+      
       return data;
     } catch (error) {
-      thunkAPI.rejectWithValue(error.message);
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
-);
+  );
+   export const refreshUser = createAsyncThunk(
+    "auth/refreshUser",
+    async (token, thunkAPI) => {
+      try {
+        const response = await fetch(`${BASE_URL}/users/current`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+  
+        if (!response.ok) {
+          throw new Error(data.message);
+        }
+  
+        return data;
+      } catch (error) {
+        thunkAPI.rejectWithValue(error.message);
+      }
+    }
+  );  
