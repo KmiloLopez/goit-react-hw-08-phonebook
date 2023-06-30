@@ -41,9 +41,11 @@ export const authSlice = createSlice({
     [register.pending]: handlePending,
     [login.pending]: handlePending,
     [refreshUser.pending]: handlePending,
+    [logout.pending]: handlePending,
     [register.rejected]: handleRejected,
     [login.rejected]: handleRejected,
     [refreshUser.rejected]: handleRejected,
+    [login.rejected]: handleRejected,
     [register.fulfilled](state, { payload }) {
       const { name, email } = payload.user;
       state.user = { name, email };

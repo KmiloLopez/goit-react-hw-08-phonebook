@@ -5,10 +5,11 @@ export const fetchContacts = createAsyncThunk(
   "contacts/fetchContacts",
   async (token, thunkAPI) => {
     try {
+      console.log("AsyncThunk > token",token)
       const response = await fetch(`${BASE_URL}/contacts`, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `${token}`,
         },
       });
 

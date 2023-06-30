@@ -5,8 +5,8 @@ import { useEffect } from 'react';
 
 const ContactsFilter = () => {
   const [filter, setFilter] = useState('');
-
   const dispatch = useDispatch();
+
   const handleChange = e => {
     setFilter(e.target.value);
   };
