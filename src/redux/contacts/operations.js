@@ -26,17 +26,17 @@ export const fetchContacts = createAsyncThunk(
   }
 );
 
-export const createTransaction = createAsyncThunk(
-  "transactions/createTransaction",
-  async ({ token, transaction }, thunkAPI) => {
+export const addContact = createAsyncThunk(
+  "contacts/addContact",
+  async ({ token, userInfo }, thunkAPI) => {
     try {
-      const response = await fetch(`${BASE_URL}/transactions`, {
+      const response = await fetch(`${BASE_URL}/contacts`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(transaction),
+        body: JSON.stringify(userInfo),
       });
 
       const data = await response.json();

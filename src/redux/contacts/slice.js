@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createTransaction, fetchContacts} from "./operations";
+import { addContact, fetchContacts} from "./operations";
 import { refreshUser } from "redux/auth/operations";
 
 const initialState = {
@@ -42,24 +42,25 @@ export const contactsSlice = createSlice({
   },
   extraReducers: {
     [fetchContacts.pending]: handlePending,
-    [createTransaction.pending]: handlePending,
+    [addContact.pending]: handlePending,
     [refreshUser.pending]: handlePending,
     [fetchContacts.rejected]: handleRejected,
-    [createTransaction.rejected]: handleRejected,
+    [addContact.rejected]: handleRejected,
     [refreshUser.rejected]: handleRejected,
     [fetchContacts.fulfilled](state, { payload }) {
       console.log('fectchContacts.Fulfilled',payload);
-      state.contacts = payload.data;
+      state.contacts = payload;
       state.meta = payload.meta;
       state.isLoading = false;
       state.error = null;
       state.formError = undefined;
     },
-    [createTransaction.fulfilled](state, { payload }) {
+    [addContact.fulfilled](state, { payload }) {
       state.isLoading = false;
       state.error = null;
       state.formError = undefined;
       state.message = `A transaction of category ${payload.category} was created successfully`;
+      console.log("addContact.fulfilled");
     },
     [refreshUser.fulfilled](state, { payload }) {
       state.user = {
