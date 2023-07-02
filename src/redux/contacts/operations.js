@@ -52,16 +52,17 @@ export const addContact = createAsyncThunk(
   }
 );
 export const deleteContact = createAsyncThunk(
-  'contacts/deletecontact',
-  async (idToDelete, thunkAPI) => {
+  'contacts/deleteContact',
+  async ({contactId, token}, thunkAPI) => {
     try {
-      const data = await fetch(`${BASE_URL}/contacts/${idToDelete}`, {
-        method: 'DELETE',
+      console.log("id and token",contactId, token);
+      const data = await fetch(`${BASE_URL}/contacts/${contactId}`, {
+        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${idToDelete.token}`,
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(idToDelete),
+        
       });
       const response = await data.json();
       return response;

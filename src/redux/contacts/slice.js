@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addContact, fetchContacts} from "./operations";
+import { addContact, deleteContact, fetchContacts} from "./operations";
 import { refreshUser } from "redux/auth/operations";
 
 const initialState = {
@@ -44,9 +44,11 @@ export const contactsSlice = createSlice({
     [fetchContacts.pending]: handlePending,
     [addContact.pending]: handlePending,
     [refreshUser.pending]: handlePending,
+    [deleteContact.pending]: handlePending,
     [fetchContacts.rejected]: handleRejected,
     [addContact.rejected]: handleRejected,
     [refreshUser.rejected]: handleRejected,
+    [deleteContact.rejected]: handleRejected,
     [fetchContacts.fulfilled](state, { payload }) {
       console.log('fectchContacts.Fulfilled',payload);
       state.contacts = payload;
@@ -70,6 +72,17 @@ export const contactsSlice = createSlice({
       state.isLoggedIn = true;
       state.error = null;
       state.isLoading = false;
+    },
+    [deleteContact.fulfilled](state, { payload }) {//creo que no deberia aber nada de info en payload
+      state.isLoading = false;
+      state.error = null;
+      state.formError = undefined;
+      state.message = `deleted`;
+      const index = state.contacts.findIndex(//borra de la lista que vemos en ui pero no en servidor. contacto regresa al refrescar la pg
+        contact => contact.id === payload.id
+      );
+      state.contacts.splice(index, 1);
+      console.log("deletedContact.fulfilled");
     },
   },
 });

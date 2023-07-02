@@ -16,7 +16,7 @@ const ContactsFilter = () => {
 
   return (
     <>
-      <div>Filter by name</div>
+      <h4 style={{marginTop: 50}}>Filter by name</h4>
       <input type="text" name="filter" value={filter} onChange={handleChange} />
     </>
   );

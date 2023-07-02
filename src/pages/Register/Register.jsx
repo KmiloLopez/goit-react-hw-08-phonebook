@@ -6,8 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 const Register = () => {
   const dispatch = useDispatch();
-  const { formError, error, isLoading, token} = useSelector((state) => state.auth);
-  const {name, email} = useSelector((state) => state.auth.user);
+  const { formError, error, isLoading} = useSelector((state) => state.auth);
+ 
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -39,12 +39,9 @@ const Register = () => {
       dispatch(clearError());
     }
   }, [dispatch, error]); 
-  const handleClick = ()=>{
-    
-    console.log("hep clicked",name, email, token);
-  }
+
     return (<div>
-      <h2>Register</h2>;
+      
       <div
       style={{
         height: "calc(100vh - 50px)",
@@ -89,7 +86,7 @@ const Register = () => {
         
       </form>
       <Toaster/>
-      <button onClick={handleClick}>show state user</button>
+      
     </div>
     </div>
 

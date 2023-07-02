@@ -40,7 +40,7 @@ const Login = () => {
     }
   }, [dispatch, error]); 
     return (<div>
-      <h2>Login</h2>;
+      
       <div
       style={{
         height: "calc(100vh - 50px)",

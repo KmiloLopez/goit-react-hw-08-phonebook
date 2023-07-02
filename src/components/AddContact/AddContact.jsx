@@ -2,7 +2,7 @@ import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 
 import { useSelector } from 'react-redux';
-import { addContact } from 'redux/contacts/operations';
+import { addContact, fetchContacts } from 'redux/contacts/operations';
 
 /* import PropTypes from 'prop-types'; */
 
@@ -60,6 +60,7 @@ const AddContact = () => {
           token,
         })
       );
+      dispatch(fetchContacts(token))
       alert('Contact Successfully Added to the contact list');
     }
 
@@ -73,6 +74,7 @@ const AddContact = () => {
   };
   return (
     <form onSubmit={handleSubmit}>
+      <h2>Add new Contact</h2>
       <p>Name</p>
       <input
         type="text"

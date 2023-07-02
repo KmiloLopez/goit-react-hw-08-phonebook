@@ -46,10 +46,15 @@ export const App = () => {
           }
         />
           <Route path="/contacts" element={
-            <PrivateRoute redirectTo="/" component={<Contacts />} />
+            <PrivateRoute redirectTo="/contacts" component={<Contacts />} />
           }/>
           
-          <Route path="*" element={<SharedLayout/>} />
+          <Route path="*" element={
+            <RestrictedRoute
+              component={<Contacts/>}
+              redirectTo="/contacts"
+            />
+          }x />
         </Route>    
         
       </Routes>
